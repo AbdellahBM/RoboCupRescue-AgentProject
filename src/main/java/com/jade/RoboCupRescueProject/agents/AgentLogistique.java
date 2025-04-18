@@ -4,9 +4,9 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.RecevoirDemandesRessourcesBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.AcheminerApprovisionnementBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.FournirRapportStockBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.logistique.RecevoirDemandesRessourcesBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.logistique.AcheminerApprovisionnementBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.logistique.FournirRapportStockBehaviour;
 
 public class AgentLogistique extends Agent {
     @Override

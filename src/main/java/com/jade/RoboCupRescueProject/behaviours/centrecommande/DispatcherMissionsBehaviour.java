@@ -1,4 +1,4 @@
-package com.jade.RoboCupRescueProject.behaviours;
+package com.jade.RoboCupRescueProject.behaviours.centrecommande;
 
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;

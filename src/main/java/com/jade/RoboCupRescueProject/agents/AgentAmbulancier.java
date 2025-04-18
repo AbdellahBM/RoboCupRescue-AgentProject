@@ -4,10 +4,10 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.LocaliserVictimesBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.SoinsPremiersBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.TransporterVictimesBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.InformerCentreBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.ambulancier.LocaliserVictimesBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.ambulancier.SoinsPremiersBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.ambulancier.TransporterVictimesBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.ambulancier.InformerCentreBehaviour;
 
 public class AgentAmbulancier extends Agent {
     @Override

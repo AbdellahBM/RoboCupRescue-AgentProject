@@ -4,9 +4,9 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.ExplorerZoneBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.DetecterFoyersIncendieBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.LocaliserVictimesRobotBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.robot.ExplorerZoneBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.robot.DetecterFoyersIncendieBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.robot.LocaliserVictimesRobotBehaviour;
 
 public class AgentRobot extends Agent {
     @Override

@@ -4,10 +4,10 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.GererCirculationBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.FournirItineraireBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.BloquerZoneDangerBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.SignalerChangementsBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.police.GererCirculationBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.police.FournirItineraireBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.police.BloquerZoneDangerBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.police.SignalerChangementsBehaviour;
 
 public class AgentPolice extends Agent {
     @Override

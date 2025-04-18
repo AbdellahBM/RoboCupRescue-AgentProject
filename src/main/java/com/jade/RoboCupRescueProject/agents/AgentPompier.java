@@ -4,10 +4,10 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.DetecterIncendieBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.EteindreIncendieBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.SignalerEtatFeuBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.DemanderAssistanceLogistiqueBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.pompier.DetecterIncendieBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.pompier.EteindreIncendieBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.pompier.SignalerEtatFeuBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.pompier.DemanderAssistanceLogistiqueBehaviour;
 
 public class AgentPompier extends Agent {
     @Override

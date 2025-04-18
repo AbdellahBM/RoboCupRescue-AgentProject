@@ -4,10 +4,10 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.RecevoirOrdresCentreBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.AssignerTachesPompiersBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.RecupererRapportsPompierBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.FaireSyntheseAuCentreBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.chefequipepompier.RecevoirOrdresCentreBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.chefequipepompier.AssignerTachesPompiersBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.chefequipepompier.RecupererRapportsPompierBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.chefequipepompier.FaireSyntheseAuCentreBehaviour;
 
 public class AgentChefEquipePompier extends Agent {
     @Override

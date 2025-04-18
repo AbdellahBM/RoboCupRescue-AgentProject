@@ -4,10 +4,10 @@ import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import com.jade.RoboCupRescueProject.behaviours.CollecterInfosBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.PlanifierInterventionBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.DispatcherMissionsBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.GererRessourcesGlobalesBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.CollecterInfosBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.PlanifierInterventionBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.DispatcherMissionsBehaviour;
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.GererRessourcesGlobalesBehaviour;
 
 public class AgentCentreCommande extends Agent {
     @Override
