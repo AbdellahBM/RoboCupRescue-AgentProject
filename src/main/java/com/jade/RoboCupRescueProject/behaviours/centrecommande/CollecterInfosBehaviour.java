@@ -24,7 +24,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
     public CollecterInfosBehaviour(Agent a) { 
         super(a); 
-        System.out.println(a.getLocalName() + ": Starting information collection behavior");
     }
 
     @Override
@@ -37,8 +36,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
             // Process the message
             String content = msg.getContent();
             String sender = msg.getSender().getLocalName();
-
-            System.out.println(myAgent.getLocalName() + ": Received information from " + sender + ": " + content);
 
             // Update agent status
             ((AgentCentreCommande)myAgent).updateStatus("PROCESSING_INFO:" + sender);
@@ -58,9 +55,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
                 processSituationReport(content, sender);
             } else if (content.startsWith(VICTIM_TRANSPORTED) || content.startsWith(TRANSPORT_REPORT)) {
                 processTransportReport(content, sender);
-            } else {
-                // Unknown message type
-                System.out.println(myAgent.getLocalName() + ": Received unknown message type from " + sender);
             }
 
             // Send acknowledgement
@@ -84,9 +78,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
             // Update the command center's knowledge base
             ((AgentCentreCommande)myAgent).addFireReport(location, status);
-
-            System.out.println(myAgent.getLocalName() + ": Processed fire report from " + sender + 
-                               " - Location: " + location + ", Status: " + status);
         }
     }
 
@@ -104,9 +95,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
             // Update the command center's knowledge base
             ((AgentCentreCommande)myAgent).addVictimReport(location, status);
-
-            System.out.println(myAgent.getLocalName() + ": Processed victim report from " + sender + 
-                               " - Location: " + location + ", Status: " + status);
         }
     }
 
@@ -124,9 +112,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
             // Update the command center's knowledge base
             ((AgentCentreCommande)myAgent).addRoadReport(roadId, status);
-
-            System.out.println(myAgent.getLocalName() + ": Processed road status change from " + sender + 
-                               " - Road: " + roadId + ", Status: " + status);
         }
     }
 
@@ -145,9 +130,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
             // Update the command center's knowledge base
             ((AgentCentreCommande)myAgent).addSecurityZoneReport(zoneId, status);
-
-            System.out.println(myAgent.getLocalName() + ": Processed security perimeter from " + sender + 
-                               " - Zone: " + zoneId + ", Type: " + zoneType + ", Status: " + status);
         }
     }
 
@@ -166,9 +148,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
             if (keyValue.length == 2) {
                 String key = keyValue[0];
                 String value = keyValue[1];
-
-                System.out.println(myAgent.getLocalName() + ": Processed summary data from " + sender + 
-                                   " - " + key + ": " + value);
 
                 // Add to priority missions if needed
                 if (key.equals("critique") && Integer.parseInt(value) > 0) {
@@ -193,9 +172,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
             if (keyValue.length == 2) {
                 String key = keyValue[0];
                 String value = keyValue[1];
-
-                System.out.println(myAgent.getLocalName() + ": Processed situation data from " + sender + 
-                                   " - " + key + ": " + value);
 
                 // Add to priority missions if needed
                 if (key.equals("closed_roads") && Integer.parseInt(value) > 0) {
@@ -224,9 +200,6 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
             String facility = parts[1];
             String status = parts[2];
 
-            System.out.println(myAgent.getLocalName() + ": Processed transport report from " + sender + 
-                               " - Location: " + location + ", Facility: " + facility + ", Status: " + status);
-
             // Update victim status to transported
             ((AgentCentreCommande)myAgent).addVictimReport(location, "TRANSPORTED:" + facility);
         }
@@ -246,7 +219,5 @@ public class CollecterInfosBehaviour extends CyclicBehaviour {
 
         ack.setContent("ACKNOWLEDGEMENT:" + ackId);
         myAgent.send(ack);
-
-        System.out.println(myAgent.getLocalName() + ": Sent acknowledgement " + ackId + " to " + receiver.getLocalName());
     }
 }

@@ -71,8 +71,7 @@ public class LocaliserVictimesBehaviour extends CyclicBehaviour {
         }
 
         currentPosition = new Position(nextX, nextY);
-        System.out.println(myAgent.getLocalName() + ": Patrolling at position (" +
-                currentPosition.x + "," + currentPosition.y + ")");
+        // Removed patrol position logging to reduce console clutter
     }
 
     private void scanForVictims() {

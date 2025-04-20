@@ -1,15 +1,13 @@
 package com.jade.RoboCupRescueProject.agents;
 
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.*;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.core.behaviours.TickerBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.centrecommande.CollecterInfosBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.centrecommande.PlanifierInterventionBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.centrecommande.DispatcherMissionsBehaviour;
-import com.jade.RoboCupRescueProject.behaviours.centrecommande.GererRessourcesGlobalesBehaviour;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
@@ -54,8 +52,6 @@ public class AgentCentreCommande extends Agent {
 
     @Override
     protected void setup() {
-        System.out.println("Agent Centre Commande " + getLocalName() + " starting...");
-
         // Initialize resources
         initializeResources();
 
@@ -67,21 +63,25 @@ public class AgentCentreCommande extends Agent {
         addBehaviour(new PlanifierInterventionBehaviour(this));
         addBehaviour(new DispatcherMissionsBehaviour(this));
         addBehaviour(new GererRessourcesGlobalesBehaviour(this));
+        addBehaviour(new ComportementSuiviExtinction());
+        addBehaviour(new FireAlertHandlerBehaviour());
 
-        // Add a status update behavior
-        addBehaviour(new TickerBehaviour(this, 10000) { // Every 10 seconds
+        // Add a status update behavior with reduced frequency and only during active scenarios
+        addBehaviour(new TickerBehaviour(this, 30000) { // Every 30 seconds instead of 10
             @Override
             protected void onTick() {
-                System.out.println("Agent Centre Commande " + myAgent.getLocalName() + 
+                // Only log status if there's activity to report
+                if (totalFiresReported > 0 || totalVictimsReported > 0 || 
+                    totalRoadIssuesReported > 0 || totalMissionsDispatched > 0) {
+                    System.out.println("Agent Centre Commande " + myAgent.getLocalName() + 
                                    " status: " + currentStatus + 
                                    ", Fires: " + totalFiresReported + 
                                    ", Victims: " + totalVictimsReported +
                                    ", Road issues: " + totalRoadIssuesReported +
                                    ", Missions: " + totalMissionsDispatched);
+                }
             }
         });
-
-        System.out.println("Agent Centre Commande " + getLocalName() + " ready.");
     }
 
     /**
@@ -110,9 +110,7 @@ public class AgentCentreCommande extends Agent {
 
         try { 
             DFService.register(this, dfd); 
-            System.out.println("Agent Centre Commande " + getLocalName() + " registered with DF");
         } catch (FIPAException e) { 
-            System.err.println("Error registering Agent Centre Commande " + getLocalName() + " with DF: " + e.getMessage());
             e.printStackTrace(); 
         }
     }
@@ -289,11 +287,8 @@ public class AgentCentreCommande extends Agent {
         // Deregister from the DF
         try {
             DFService.deregister(this);
-            System.out.println("Agent Centre Commande " + getLocalName() + " deregistered from DF");
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Agent Centre Commande " + getLocalName() + " terminating.");
     }
 }

@@ -52,7 +52,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
 
         // Initialize agent cache
         initializeAgentCache();
-        System.out.println(myAgent.getLocalName() + ": Starting mission dispatching behavior");
+        // Removed startup logging to reduce console clutter
     }
 
     private void initializeAgentCache() {
@@ -93,7 +93,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
     }
 
     private void updateAvailableAgents() {
-        System.out.println(myAgent.getLocalName() + ": Updating available agents");
+        // Removed updating available agents logging to reduce console clutter
 
         for (String agentType : new String[]{AGENT_TYPE_POMPIER, AGENT_TYPE_AMBULANCIER, AGENT_TYPE_POLICE}) {
             try {
@@ -109,8 +109,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
                 }
                 availableAgents.put(agentType, agents);
 
-                System.out.println(myAgent.getLocalName() + ": Found " + agents.size() +
-                        " agents of type " + agentType);
+                // Removed found agents of type logging to reduce console clutter
             } catch (FIPAException e) {
                 System.err.println(myAgent.getLocalName() + ": Error searching for " +
                         agentType + " agents: " + e.getMessage());
@@ -152,8 +151,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
         missionStatus.put(mission.getId(), STATUS_ASSIGNED);
         agentLastResponse.put(agent.getLocalName(), System.currentTimeMillis());
 
-        System.out.println(myAgent.getLocalName() + ": Dispatched mission " + mission.getId() +
-                " to " + agent.getLocalName());
+        // Removed dispatched mission logging to reduce console clutter
     }
 
     private void processAgentResponses() {
@@ -177,13 +175,11 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
     private void handleMissionAccepted(String missionId, AID agent) {
         missionStatus.put(missionId, STATUS_ASSIGNED);
         agentLastResponse.put(agent.getLocalName(), System.currentTimeMillis());
-        System.out.println(myAgent.getLocalName() + ": Mission " + missionId +
-                " accepted by " + agent.getLocalName());
+        // Removed mission accepted logging to reduce console clutter
     }
 
     private void handleMissionRefused(String missionId, AID agent, String reason) {
-        System.out.println(myAgent.getLocalName() + ": Mission " + missionId +
-                " refused by " + agent.getLocalName() + ": " + reason);
+        // Removed mission refused logging to reduce console clutter
         missionStatus.put(missionId, STATUS_PENDING);
         retryMission(missionId);
     }
@@ -197,7 +193,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
     }
 
     private void handleAgentTimeout(String agentName) {
-        System.out.println(myAgent.getLocalName() + ": Agent " + agentName + " timed out");
+        // Removed agent timeout logging to reduce console clutter
         agentLastResponse.remove(agentName);
         // Update agent availability and retry affected missions
         updateAgentAvailability(agentName);
@@ -232,8 +228,7 @@ public class DispatcherMissionsBehaviour extends CyclicBehaviour {
 
     private void handleNoAvailableAgent(Mission mission) {
         // Implement fallback strategy
-        System.out.println(myAgent.getLocalName() + ": No suitable agent found for mission: " +
-                mission.getDescription());
+        // Removed no suitable agent found logging to reduce console clutter
     }
 
     private String formatMissionMessage(Mission mission) {

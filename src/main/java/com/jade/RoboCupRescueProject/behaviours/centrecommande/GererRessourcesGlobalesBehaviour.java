@@ -45,7 +45,7 @@ public class GererRessourcesGlobalesBehaviour extends CyclicBehaviour {
 
     public GererRessourcesGlobalesBehaviour(Agent a) { 
         super(a); 
-        System.out.println(a.getLocalName() + ": Starting resource management behavior");
+        // Removed startup logging to reduce console clutter
 
         // Initialize consumption rates
         CONSUMPTION_RATES.put(RESOURCE_FIRE_TRUCKS, 0);
@@ -211,7 +211,7 @@ public class GererRessourcesGlobalesBehaviour extends CyclicBehaviour {
      * Check and update resources
      */
     private void checkAndUpdateResources() {
-        System.out.println(myAgent.getLocalName() + ": Checking and updating resources");
+        // Removed checking and updating resources logging to reduce console clutter
 
         // Update agent status
         ((AgentCentreCommande)myAgent).updateStatus("CHECKING_RESOURCES");
@@ -248,8 +248,7 @@ public class GererRessourcesGlobalesBehaviour extends CyclicBehaviour {
                 // Update the resource
                 agent.updateResource(resourceType, newAmount);
 
-                System.out.println(myAgent.getLocalName() + ": Consumed " + consumption + " " + 
-                                   resourceType + ", remaining: " + newAmount);
+                // Removed consumed resources logging to reduce console clutter
             }
         }
     }
@@ -283,9 +282,7 @@ public class GererRessourcesGlobalesBehaviour extends CyclicBehaviour {
             int requestAmount = threshold * 2 - current; // Request enough to get to twice the threshold
             requestAdditionalResources(resourceType, requestAmount);
 
-            System.out.println(myAgent.getLocalName() + ": Resource " + resourceType + 
-                               " below threshold (" + current + "/" + threshold + 
-                               "), requesting " + requestAmount + " more");
+            // Removed resource below threshold logging to reduce console clutter
         }
     }
 

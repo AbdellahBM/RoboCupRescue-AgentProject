@@ -15,7 +15,7 @@ public class DetecterIncendieBehaviour extends TickerBehaviour {
     public DetecterIncendieBehaviour(Agent a, long period) {
         super(a, period);
         detectedFires = new HashMap<>();
-        System.out.println(a.getLocalName() + ": Starting fire detection behavior");
+        // Log supprimé pour réduire le bruit dans la console
     }
 
     @Override

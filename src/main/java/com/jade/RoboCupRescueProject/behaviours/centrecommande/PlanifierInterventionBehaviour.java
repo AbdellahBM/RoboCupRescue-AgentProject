@@ -35,7 +35,7 @@ public class PlanifierInterventionBehaviour extends CyclicBehaviour {
 
     public PlanifierInterventionBehaviour(Agent a) { 
         super(a); 
-        System.out.println(a.getLocalName() + ": Starting planning behavior");
+        // Removed startup logging to reduce console clutter
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PlanifierInterventionBehaviour extends CyclicBehaviour {
         // Update agent status
         ((AgentCentreCommande)myAgent).updateStatus("PLANNING");
 
-        System.out.println(myAgent.getLocalName() + ": Planning intervention priorities");
+        // Removed planning intervention priorities logging to reduce console clutter
 
         // Get the current state of the disaster area
         AgentCentreCommande agent = (AgentCentreCommande)myAgent;
@@ -78,7 +78,7 @@ public class PlanifierInterventionBehaviour extends CyclicBehaviour {
         // Update the agent's priority missions
         updatePriorityMissions(missions, agent);
 
-        System.out.println(myAgent.getLocalName() + ": Planning completed with " + missions.size() + " missions");
+        // Removed planning completed logging to reduce console clutter
 
         // Wait before next planning cycle
         block(PLANNING_INTERVAL);
@@ -211,8 +211,7 @@ public class PlanifierInterventionBehaviour extends CyclicBehaviour {
                                ":" + mission.getPriority() + ":" + mission.getDescription();
             agent.addPriorityMission(missionStr);
 
-            System.out.println(myAgent.getLocalName() + ": Added priority mission - " + mission.getDescription() + 
-                               " (Priority: " + mission.getPriority() + ")");
+            // Removed added priority mission logging to reduce console clutter
         }
     }
 

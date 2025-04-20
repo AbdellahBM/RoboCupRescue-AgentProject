@@ -1,5 +1,6 @@
 package com.jade.RoboCupRescueProject.agents;
 
+import com.jade.RoboCupRescueProject.behaviours.centrecommande.ComportementSuiviExtinction;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -37,6 +38,7 @@ public class AgentCentreControle extends Agent {
         addBehaviour(new EmergencyMonitorBehaviour(this, 5000));  // Check every 5 seconds
         addBehaviour(new HandleTeamReportsBehaviour());
         addBehaviour(new AssignMissionsBehaviour());
+        addBehaviour(new ComportementSuiviExtinction());
 
         System.out.println("Command Center is ready.");
     }
