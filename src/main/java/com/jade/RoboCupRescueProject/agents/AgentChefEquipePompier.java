@@ -75,4 +75,5 @@ public class AgentChefEquipePompier extends Agent {
 
         System.out.println("Agent Chef Equipe Pompier " + getLocalName() + " terminating.");
     }
+
 }

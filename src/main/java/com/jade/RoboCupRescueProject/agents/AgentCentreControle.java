@@ -1,6 +1,7 @@
 package com.jade.RoboCupRescueProject.agents;
 
 import com.jade.RoboCupRescueProject.behaviours.centrecommande.ComportementSuiviExtinction;
+import com.jade.RoboCupRescueProject.utils.AgentConsoleLogger;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -29,7 +30,7 @@ public class AgentCentreControle extends Agent {
 
     @Override
     protected void setup() {
-        System.out.println("Command Center starting... " + getAID().getName());
+        AgentConsoleLogger.logAgentStarting(this);
 
         // Register the command center service
         registerService();
@@ -40,7 +41,7 @@ public class AgentCentreControle extends Agent {
         addBehaviour(new AssignMissionsBehaviour());
         addBehaviour(new ComportementSuiviExtinction());
 
-        System.out.println("Command Center is ready.");
+        AgentConsoleLogger.logAgentStatus(this, "READY", "Centre de contrôle prêt à coordonner les opérations");
     }
 
     private void registerService() {
@@ -211,6 +212,6 @@ public class AgentCentreControle extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        System.out.println("Command Center shutting down...");
+        AgentConsoleLogger.logAgentStopping(this);
     }
 }

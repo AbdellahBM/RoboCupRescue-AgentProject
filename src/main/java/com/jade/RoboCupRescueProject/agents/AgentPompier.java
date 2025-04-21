@@ -3,6 +3,7 @@ package com.jade.RoboCupRescueProject.agents;
 import com.jade.RoboCupRescueProject.behaviours.pompier.ComportementExtinctionFeu;
 import com.jade.RoboCupRescueProject.behaviours.pompier.FireAlertResponseBehaviour;
 import com.jade.RoboCupRescueProject.scenarios.ScenarioAlerteIncendie;
+import com.jade.RoboCupRescueProject.utils.AgentConsoleLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -18,6 +19,9 @@ public class AgentPompier extends Agent {
 
     @Override
     protected void setup() {
+        // Log agent starting
+        AgentConsoleLogger.logAgentStarting(this);
+
         // Register with Directory Facilitator
         registerWithDF();
 
@@ -26,12 +30,20 @@ public class AgentPompier extends Agent {
 
         // Ajouter le comportement de réponse aux alertes incendie
         addBehaviour(new FireAlertResponseBehaviour());
+
+        // Log agent status
+        AgentConsoleLogger.logFirefighterStatus(this, currentLocation, waterLevel, isAvailable);
     }
 
     // Méthode pour démarrer le scénario d'incendie
     public void demarrerScenarioIncendie(String idBatiment, String intensiteFeu, int nombreVictimes, 
                                         boolean matieresDangereuses, String accessibilite, int etage) {
-        System.out.println(getLocalName() + ": Démarrage du scénario d'incendie pour le bâtiment " + idBatiment);
+        String details = String.format("Bâtiment: %s, Intensité: %s, Victimes: %d, Matières dangereuses: %s, Accessibilité: %s, Étage: %d",
+                                      idBatiment, intensiteFeu, nombreVictimes, 
+                                      matieresDangereuses ? "Oui" : "Non", accessibilite, etage);
+
+        AgentConsoleLogger.logAgentAction(this, "Démarrage scénario incendie", details);
+
         addBehaviour(new ScenarioAlerteIncendie.DetectionFeuBehaviour(idBatiment, intensiteFeu, 
                                                                     nombreVictimes, matieresDangereuses, 
                                                                     accessibilite, etage));
@@ -100,16 +112,16 @@ public class AgentPompier extends Agent {
                 String accessibilite = parts[6];
                 int etage = Integer.parseInt(parts[7]);
 
-                System.out.println(getLocalName() + ": Reçu demande de démarrage du scénario d'incendie");
+                AgentConsoleLogger.logAgentAction(this, "Réception demande", "Demande de démarrage du scénario d'incendie reçue");
                 demarrerScenarioIncendie(idBatiment, intensiteFeu, nombreVictimes, 
                                         matieresDangereuses, accessibilite, etage);
             } else {
-                System.err.println(getLocalName() + ": Format de message invalide pour le démarrage du scénario. " +
-                                  "Format attendu: START_SCENARIO:FIRE_ALERT:idBatiment:intensiteFeu:nombreVictimes:" +
-                                  "matieresDangereuses:accessibilite:etage");
+                String errorDetails = "Format attendu: START_SCENARIO:FIRE_ALERT:idBatiment:intensiteFeu:nombreVictimes:" +
+                                     "matieresDangereuses:accessibilite:etage";
+                AgentConsoleLogger.logAgentStatus(this, "ERREUR", "Format de message invalide pour le démarrage du scénario. " + errorDetails);
             }
         } catch (Exception e) {
-            System.err.println(getLocalName() + ": Erreur lors du traitement de la demande de scénario: " + e.getMessage());
+            AgentConsoleLogger.logAgentStatus(this, "ERREUR", "Erreur lors du traitement de la demande de scénario: " + e.getMessage());
         }
     }
 
@@ -142,14 +154,22 @@ public class AgentPompier extends Agent {
             addBehaviour(new OneShotBehaviour(this) {
                 @Override
                 public void action() {
-                    System.out.println(getLocalName() + ": Executing fire fighting mission at " + location);
+                    // Log mission execution
+                    AgentConsoleLogger.logAgentAction(myAgent, "Exécution mission", "Intervention sur incendie à " + location);
+
                     // Simulate fire fighting
                     waterLevel -= 200;
                     currentLocation = location;
 
+                    // Update status
+                    AgentConsoleLogger.logFirefighterStatus(myAgent, location, waterLevel, false);
+
                     // Report mission completion
                     reportMissionComplete(location);
                     isAvailable = true;
+
+                    // Log updated status after mission
+                    AgentConsoleLogger.logFirefighterStatus(myAgent, currentLocation, waterLevel, isAvailable);
                 }
             });
         }
@@ -158,6 +178,10 @@ public class AgentPompier extends Agent {
     private void reportStatus() {
         // Only send status updates during scenario execution to reduce console noise
         if (!currentLocation.equals("BASE") || !isAvailable) {
+            // Log status to console for user
+            AgentConsoleLogger.logFirefighterStatus(this, currentLocation, waterLevel, isAvailable);
+
+            // Send status message to other agents
             ACLMessage status = new ACLMessage(ACLMessage.INFORM);
             status.setContent(String.format("STATUS:FIREFIGHTER:%s:water=%.1f:location=%s:available=%b",
                     getLocalName(), waterLevel, currentLocation, isAvailable));
@@ -181,6 +205,9 @@ public class AgentPompier extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+
+        // Log agent stopping
+        AgentConsoleLogger.logAgentStopping(this);
     }
 
     // Utility methods

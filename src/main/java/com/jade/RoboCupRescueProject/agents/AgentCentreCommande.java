@@ -1,6 +1,7 @@
 package com.jade.RoboCupRescueProject.agents;
 
 import com.jade.RoboCupRescueProject.behaviours.centrecommande.*;
+import com.jade.RoboCupRescueProject.utils.AgentConsoleLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
@@ -52,6 +53,9 @@ public class AgentCentreCommande extends Agent {
 
     @Override
     protected void setup() {
+        // Log agent starting
+        AgentConsoleLogger.logAgentStarting(this);
+
         // Initialize resources
         initializeResources();
 
@@ -66,6 +70,9 @@ public class AgentCentreCommande extends Agent {
         addBehaviour(new ComportementSuiviExtinction());
         addBehaviour(new FireAlertHandlerBehaviour());
 
+        // Log agent status
+        AgentConsoleLogger.logAgentStatus(this, "READY", "Centre de commande prêt à coordonner les opérations");
+
         // Add a status update behavior with reduced frequency and only during active scenarios
         addBehaviour(new TickerBehaviour(this, 30000) { // Every 30 seconds instead of 10
             @Override
@@ -73,12 +80,14 @@ public class AgentCentreCommande extends Agent {
                 // Only log status if there's activity to report
                 if (totalFiresReported > 0 || totalVictimsReported > 0 || 
                     totalRoadIssuesReported > 0 || totalMissionsDispatched > 0) {
-                    System.out.println("Agent Centre Commande " + myAgent.getLocalName() + 
-                                   " status: " + currentStatus + 
-                                   ", Fires: " + totalFiresReported + 
-                                   ", Victims: " + totalVictimsReported +
-                                   ", Road issues: " + totalRoadIssuesReported +
-                                   ", Missions: " + totalMissionsDispatched);
+                    // Log command center report with detailed information
+                    AgentConsoleLogger.logCommandCenterReport(
+                        myAgent, 
+                        totalFiresReported, 
+                        totalVictimsReported, 
+                        totalRoadIssuesReported, 
+                        totalMissionsDispatched
+                    );
                 }
             }
         });
@@ -290,5 +299,8 @@ public class AgentCentreCommande extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
+
+        // Log agent stopping
+        AgentConsoleLogger.logAgentStopping(this);
     }
 }
