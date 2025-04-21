@@ -1,1 +1,1 @@
-http://southern-bihi-HP-EliteBook-840-G3:7778/acc
+http://laptop:7778/acc

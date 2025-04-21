@@ -6,33 +6,33 @@ import jade.lang.acl.ACLMessage;
 import jade.core.behaviours.OneShotBehaviour;
 
 /**
- * Scénario d'alerte incendie pour la simulation RoboCupRescue.
- * Ce scénario simule la détection d'un incendie par un pompier,
- * l'alerte au centre de commande, et la coordination pour l'extinction.
+ * Scénario d'assistance médicale pour la simulation RoboCupRescue.
+ * Ce scénario simule la détection de victimes nécessitant une assistance médicale,
+ * l'alerte au centre de commande, et la coordination pour les soins et l'évacuation des blessés.
  */
-public class ScenarioAlerteIncendie {
+public class ScenarioAssistanceMedicale {
 
     /**
-     * Comportement de détection de feu pour l'agent pompier.
+     * Comportement de détection de victimes pour l'agent ambulancier.
      * Ce comportement envoie une alerte au centre de commande
-     * lorsqu'un incendie est détecté.
+     * lorsque des victimes sont détectées.
      */
-    public static class DetectionFeuBehaviour extends OneShotBehaviour {
-        private final String idBatiment;
-        private final String intensiteFeu;
+    public static class DetectionVictimesBehaviour extends OneShotBehaviour {
+        private final String idZone;
         private final int nombreVictimes;
-        private final boolean matieresDangereuses;
-        private final String accessibilite;
-        private final int etage;
+        private final String typeUrgence;
+        private final int niveauGravite;
+        private final boolean accesVehicule;
+        private final String conditionsMeteo;
 
-        public DetectionFeuBehaviour(String idBatiment, String intensiteFeu, int nombreVictimes, 
-                                    boolean matieresDangereuses, String accessibilite, int etage) {
-            this.idBatiment = idBatiment;
-            this.intensiteFeu = intensiteFeu;
+        public DetectionVictimesBehaviour(String idZone, int nombreVictimes, String typeUrgence, 
+                                    int niveauGravite, boolean accesVehicule, String conditionsMeteo) {
+            this.idZone = idZone;
             this.nombreVictimes = nombreVictimes;
-            this.matieresDangereuses = matieresDangereuses;
-            this.accessibilite = accessibilite;
-            this.etage = etage;
+            this.typeUrgence = typeUrgence;
+            this.niveauGravite = niveauGravite;
+            this.accesVehicule = accesVehicule;
+            this.conditionsMeteo = conditionsMeteo;
         }
 
         @Override
@@ -41,72 +41,79 @@ public class ScenarioAlerteIncendie {
             ACLMessage alerte = new ACLMessage(ACLMessage.INFORM);
             alerte.addReceiver(new AID("CommandCenter", AID.ISLOCALNAME));
 
-            // Construire un message d'alerte plus complet avec toutes les informations
+            // Construire un message d'alerte complet avec toutes les informations
             StringBuilder messageAlerte = new StringBuilder();
-            messageAlerte.append("Incendie détecté au bâtiment ").append(idBatiment);
-            messageAlerte.append(", intensité estimée : ").append(intensiteFeu);
-            messageAlerte.append(", victimes estimées : ").append(nombreVictimes);
-            messageAlerte.append(", étage : ").append(etage);
-            messageAlerte.append(", matières dangereuses : ").append(matieresDangereuses ? "OUI" : "NON");
-            messageAlerte.append(", accessibilité : ").append(accessibilite);
+            messageAlerte.append("Victimes détectées dans la zone ").append(idZone);
+            messageAlerte.append(", nombre de victimes : ").append(nombreVictimes);
+            messageAlerte.append(", type d'urgence : ").append(typeUrgence);
+            messageAlerte.append(", niveau de gravité : ").append(niveauGravite);
+            messageAlerte.append(", accès véhicule : ").append(accesVehicule ? "OUI" : "NON");
+            messageAlerte.append(", conditions météo : ").append(conditionsMeteo);
 
             alerte.setContent(messageAlerte.toString());
-
-            // Logs supprimés pour réduire le bruit dans la console
-
             myAgent.send(alerte);
         }
     }
 
     /**
-     * Classe pour tester le scénario d'alerte incendie.
+     * Classe pour tester le scénario d'assistance médicale.
      * Cette classe lance le scénario en créant un agent temporaire
-     * qui envoie un message à l'agent pompier pour démarrer le scénario.
+     * qui envoie un message à l'agent ambulancier pour démarrer le scénario.
      */
-    public static class TestScenarioIncendie {
+    public static class TestScenarioMedical {
         // Délai d'initialisation du scénario (en millisecondes)
         private static final int DELAI_INITIALISATION = 2000;  // 2 secondes
 
         public static void lancerScenario() {
             // Paramètres du scénario
-            String idBatiment = "B-42";
-            String intensiteFeu = "très élevée";
-            int nombreVictimes = 7;
-            boolean matieresDangereuses = true;
-            String accessibilite = "partiellement bloquée";
-            int etage = 3;
+            String idZone = "M-23";
+            int nombreVictimes = 12;
+            String typeUrgence = "accident de transport en commun";
+            int niveauGravite = 3; // Sur une échelle de 1 à 5
+            boolean accesVehicule = true;
+            String conditionsMeteo = "pluie modérée";
 
             System.out.println("\n========================================================");
-            System.out.println("=== DÉMARRAGE DU SCÉNARIO: ALERTE INCENDIE ===");
+            System.out.println("=== DÉMARRAGE DU SCÉNARIO: ASSISTANCE MÉDICALE ===");
             System.out.println("========================================================");
             System.out.println("\n=== CONTEXTE DU SCÉNARIO ===");
-            System.out.println("Un feu se déclare dans le bâtiment " + idBatiment + " avec une intensité " + intensiteFeu);
-            System.out.println("L'incendie est situé au " + etage + "ème étage et l'accès est " + accessibilite);
-            System.out.println("Il y a environ " + nombreVictimes + " victimes piégées et des matières dangereuses sont présentes: " + (matieresDangereuses ? "OUI" : "NON"));
-            System.out.println("Un agent pompier détecte l'incendie et alerte le centre de commande");
-            System.out.println("Le centre de commande coordonne l'intervention d'extinction et de sauvetage");
+            System.out.println("Un " + typeUrgence + " s'est produit dans la zone " + idZone);
+            System.out.println("Le niveau de gravité est évalué à " + niveauGravite + "/5 et l'accès véhicule est " + (accesVehicule ? "possible" : "impossible"));
+            System.out.println("Il y a environ " + nombreVictimes + " victimes à traiter et les conditions météo sont: " + conditionsMeteo);
+            System.out.println("Un agent ambulancier détecte les victimes et alerte le centre de commande");
+            System.out.println("Le centre de commande coordonne l'intervention médicale et l'évacuation des blessés");
 
             System.out.println("\n=== ACTEURS DU SCÉNARIO ===");
-            System.out.println("- Agent Pompier (Firefighter-1)");
+            System.out.println("- Agent Ambulancier (Ambulance-1)");
             System.out.println("- Centre de Commande (CommandCenter)");
+            System.out.println("- Agent Logistique (Logistics-1)");
+            System.out.println("- Agent Police (Police-1)");
 
             System.out.println("\n=== SÉQUENCE D'INTERACTION ATTENDUE ===");
-            System.out.println("1. Pompier → Centre de Commande : INFORM");
-            System.out.println("   Message: \"Incendie détecté au bâtiment " + idBatiment + ", intensité estimée : " + intensiteFeu + 
-                             ", victimes estimées : " + nombreVictimes + ", étage : " + etage + 
-                             ", matières dangereuses : " + (matieresDangereuses ? "OUI" : "NON") + 
-                             ", accessibilité : " + accessibilite + "\"");
-            System.out.println("2. Centre de Commande → Pompier : REQUEST");
-            System.out.println("   Message: \"Reçu. Situation critique. Dirige-toi sur zone " + idBatiment + 
-                             ". Priorité 1: sauvetage des " + nombreVictimes + " victimes au " + etage + "ème étage. " +
-                             "Priorité 2: extinction du feu. Attention aux matières dangereuses. " +
+            System.out.println("1. Ambulancier → Centre de Commande : INFORM");
+            System.out.println("   Message: \"Victimes détectées dans la zone " + idZone + ", nombre de victimes : " + nombreVictimes + 
+                             ", type d'urgence : " + typeUrgence + ", niveau de gravité : " + niveauGravite + 
+                             ", accès véhicule : " + (accesVehicule ? "OUI" : "NON") + 
+                             ", conditions météo : " + conditionsMeteo + "\"");
+            System.out.println("2. Centre de Commande → Ambulancier : REQUEST");
+            System.out.println("   Message: \"Reçu. Situation médicale critique. Commencer triage et premiers soins dans la zone " + idZone + 
+                             ". Priorité 1: stabilisation des cas critiques. " +
+                             "Priorité 2: préparation pour évacuation. " +
                              "Tiens-moi au courant.\"");
-            System.out.println("3. Pompier → Centre de Commande : CONFIRM");
-            System.out.println("   Message: \"Bien reçu, je pars immédiatement. Équipement spécial pour matières dangereuses activé.\"");
-            System.out.println("4. Pompier → Centre de Commande : INFORM (Progression)");
-            System.out.println("   Message: \"PROGRESSION: Sauvetage en cours. Victimes restantes: 4/" + nombreVictimes + ". Extinction en cours. Eau utilisée: 2500/8000 litres\"");
-            System.out.println("5. Pompier → Centre de Commande : INFORM (Succès)");
-            System.out.println("   Message: \"SUCCES: Toutes les " + nombreVictimes + " victimes ont été évacuées. Le feu a été éteint. Eau totale utilisée: 8000 litres\"");
+            System.out.println("3. Centre de Commande → Police : REQUEST");
+            System.out.println("   Message: \"Urgence médicale zone " + idZone + ". Sécuriser périmètre et faciliter accès ambulances.\"");
+            System.out.println("4. Ambulancier → Centre de Commande : CONFIRM");
+            System.out.println("   Message: \"Bien reçu, triage en cours. 3 cas critiques identifiés, besoin de matériel supplémentaire.\"");
+            System.out.println("5. Centre de Commande → Logistique : REQUEST");
+            System.out.println("   Message: \"Préparer ressources médicales pour " + nombreVictimes + " victimes. Zone " + idZone + ". Urgence niveau " + niveauGravite + "/5.\"");
+            System.out.println("6. Logistique → Centre de Commande : CONFIRM");
+            System.out.println("   Message: \"Ressources en préparation: 4 kits de trauma, 10 litres de sang, 15 kits de perfusion, 8 brancards.\"");
+            System.out.println("7. Police → Centre de Commande : INFORM");
+            System.out.println("   Message: \"Périmètre sécurisé. Voie d'accès dégagée pour les ambulances. Circulation déviée.\"");
+            System.out.println("8. Ambulancier → Centre de Commande : INFORM (Progression)");
+            System.out.println("   Message: \"PROGRESSION: Triage terminé. 3 cas critiques, 5 cas sérieux, 4 cas légers. 7/" + nombreVictimes + " victimes stabilisées.\"");
+            System.out.println("9. Ambulancier → Centre de Commande : INFORM (Succès)");
+            System.out.println("   Message: \"SUCCÈS: Toutes les " + nombreVictimes + " victimes ont été stabilisées. 3 évacuées en urgence, 9 prêtes pour transport.\"");
 
             // Vérifier si nous sommes dans un contexte JADE
             boolean isJadeContext = isJadeRunning();
@@ -121,7 +128,7 @@ public class ScenarioAlerteIncendie {
                 System.out.println("\n=== COMMENT EXÉCUTER LE SCÉNARIO COMPLET ===");
                 System.out.println("Pour exécuter le scénario complet avec les agents JADE:");
                 System.out.println("1. Exécutez la classe MainContainer (com.jade.RoboCupRescueProject.MainContainer)");
-                System.out.println("2. Sélectionnez le scénario 'Alerte Incendie' dans le menu");
+                System.out.println("2. Sélectionnez le scénario 'Assistance Médicale' dans le menu");
                 System.out.println("\n=== FIN DU MODE DÉMONSTRATION ===");
                 return;
             }
@@ -144,23 +151,23 @@ public class ScenarioAlerteIncendie {
                         System.out.println("\n=== COMMENT EXÉCUTER LE SCÉNARIO COMPLET ===");
                         System.out.println("Pour exécuter le scénario complet avec les agents JADE:");
                         System.out.println("1. Exécutez la classe MainContainer (com.jade.RoboCupRescueProject.MainContainer)");
-                        System.out.println("2. Sélectionnez le scénario 'Alerte Incendie' dans le menu");
+                        System.out.println("2. Sélectionnez le scénario 'Assistance Médicale' dans le menu");
                         System.out.println("\n=== FIN DU MODE DÉMONSTRATION ===");
                         return;
                     }
 
                     // Créer un message pour démarrer le scénario
                     System.out.println("\n=== LANCEMENT DU SCÉNARIO ===");
-                    System.out.println("Envoi d'une demande de démarrage du scénario à l'agent Firefighter-1");
+                    System.out.println("Envoi d'une demande de démarrage du scénario à l'agent Ambulance-1");
 
                     // Créer le message à envoyer
                     ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-                    AID receiverAID = new AID("Firefighter-1", AID.ISLOCALNAME);
+                    AID receiverAID = new AID("Ambulance-1", AID.ISLOCALNAME);
                     msg.addReceiver(receiverAID);
 
-                    String messageScenario = "START_SCENARIO:FIRE_ALERT:" + idBatiment + ":" + intensiteFeu + 
-                                                ":" + nombreVictimes + ":" + matieresDangereuses + 
-                                                ":" + accessibilite + ":" + etage;
+                    String messageScenario = "START_SCENARIO:MEDICAL:" + idZone + ":" + nombreVictimes + 
+                                                ":" + typeUrgence + ":" + niveauGravite + 
+                                                ":" + accesVehicule + ":" + conditionsMeteo;
                     msg.setContent(messageScenario);
 
                     System.out.println("Message à envoyer: \"" + messageScenario + "\"");
@@ -175,16 +182,16 @@ public class ScenarioAlerteIncendie {
                         return;
                     }
 
-                    boolean success = containerManager.sendMessage("Firefighter-1", msg);
+                    boolean success = containerManager.sendMessage("Ambulance-1", msg);
 
                     if (success) {
-                        System.out.println("Message envoyé avec succès à Firefighter-1");
+                        System.out.println("Message envoyé avec succès à Ambulance-1");
                         System.out.println("\n=== EXÉCUTION DU SCÉNARIO EN COURS ===");
                         System.out.println("Veuillez observer les messages dans la console pour suivre le déroulement du scénario.");
                         System.out.println("--------------------------------------------------------");
                     } else {
                         System.out.println("\n=== ERREUR: IMPOSSIBLE D'ENVOYER LE MESSAGE ===");
-                        System.out.println("Impossible d'envoyer le message à l'agent Firefighter-1.");
+                        System.out.println("Impossible d'envoyer le message à l'agent Ambulance-1.");
                         System.out.println("Vérifiez que l'agent est bien démarré et enregistré dans le ContainerManager.");
                     }
 
@@ -205,17 +212,17 @@ public class ScenarioAlerteIncendie {
                         System.out.println("\n=== COMMENT EXÉCUTER LE SCÉNARIO COMPLET ===");
                         System.out.println("Pour exécuter le scénario complet avec les agents JADE:");
                         System.out.println("1. Exécutez la classe MainContainer (com.jade.RoboCupRescueProject.MainContainer)");
-                        System.out.println("2. Sélectionnez le scénario 'Alerte Incendie' dans le menu");
+                        System.out.println("2. Sélectionnez le scénario 'Assistance Médicale' dans le menu");
                         System.out.println("\n=== FIN DU MODE DÉMONSTRATION ===");
                     } else {
                         // Pour les autres types d'erreurs, afficher des instructions pour démarrer manuellement
                         System.out.println("\n=== INSTRUCTIONS POUR DÉMARRER LE SCÉNARIO MANUELLEMENT ===");
                         System.out.println("Le démarrage automatique a échoué. Veuillez suivre ces instructions:");
-                        System.out.println("1. Dans l'interface JADE, double-cliquez sur l'agent 'Firefighter-1'");
+                        System.out.println("1. Dans l'interface JADE, double-cliquez sur l'agent 'Ambulance-1'");
                         System.out.println("2. Dans la fenêtre de l'agent, envoyez un message avec:");
                         System.out.println("   - Performative: REQUEST");
-                        System.out.println("   - Receiver: Firefighter-1");
-                        System.out.println("   - Content: START_SCENARIO:FIRE_ALERT:" + idBatiment + ":" + intensiteFeu);
+                        System.out.println("   - Receiver: Ambulance-1");
+                        System.out.println("   - Content: START_SCENARIO:MEDICAL:" + idZone + ":" + nombreVictimes);
                         System.out.println("=== FIN DES INSTRUCTIONS ===");
                     }
                 }
@@ -229,14 +236,11 @@ public class ScenarioAlerteIncendie {
         private static boolean isJadeRunning() {
             try {
                 // Vérifier si nous pouvons créer un AID sans erreur
-                // C'est un test plus fiable que simplement vérifier si Runtime.instance() existe
                 new AID("test", AID.ISLOCALNAME);
-
                 // Si nous arrivons ici sans exception, JADE est correctement initialisé
                 return true;
             } catch (Exception e) {
-                // Une exception (notamment "Unknown Platform Name") indique que JADE 
-                // n'est pas correctement initialisé ou que nous ne sommes pas dans un conteneur JADE
+                // Une exception indique que JADE n'est pas correctement initialisé
                 return false;
             }
         }
